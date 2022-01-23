@@ -1,34 +1,4 @@
-#Computer makes random 5 series array
-#User guesses array
-#Computer gives feedback on which ones match, displays those sections, 
-# and countdown timer goes down by one
-# Class Mastermind
-#   def initialize(game)
-#     @game = game
-#   end
-
-# To-do
-# - use classes better
-# - determine how to start turn 2
-
-#12/25 - Figure out why game isn't ending after game is over
-# Reduce game to 6 turns
-# Figure out way to for user to create code and computer to guess.
-  # 1. Prompt- Ask user to play as guesser or mastermin
-  # 2. If mastermind, user inputs sequence of codes
-  # 3. Computer guesses what the sequence is
-  # 4. Output what guest is and what was correct 
-
-# Creates class for both the computer generated guess and the user's guess
-class Sequence
-  def initialize(name,order)
-    @name = name
-    @order = order 
-  end
-end
-
-# This method creates the random computer code by randomly picking a nubmer 
-# between 1-6 and assinging it a color.
+# This method creates the random computer code by randomly picking a nubmer between 1-6 and assinging it a color.
 def computer_code
   $code = ["","","","",""]
   i = 0
@@ -57,18 +27,19 @@ def computer_code
   $code
 end
 
-
-
-
+# This method converts the user's guess to a lowercase sequence and to a color (even if abbriviated) 
 def make_guess_array()
 
-  # This method should convert the users guess from a multitude of variations to a lowercase sequence. 
-  # How do I loop each iteration on each position?
-  # First by making the guess all lowercase and then 
   guess_gets = gets
   $actual_guess = guess_gets.delete("\"").delete("\n").downcase.split(",")
 
   j = 0 
+
+  if $actual_guess.length < 5 or $actual_guess.length > 6
+    puts "That's not 5 colors! Try again"
+    guess_gets = gets
+    $actual_guess = guess_gets.delete("\"").delete("\n").downcase.split(",")
+  end
 
   while j < $actual_guess.length
     if $actual_guess[j] == "red" or $actual_guess[j] == "r"
@@ -89,6 +60,9 @@ def make_guess_array()
     elsif $actual_guess[j] == "purple" or $actual_guess[j] =="p"
       $actual_guess[j] = "purple"
       j += 1
+    else 
+      $actual_guess[j] = "That's not an option!"
+      j += 1 
     end
   end
   $actual_guess
@@ -96,10 +70,8 @@ end
 
 
 
-
+# This method puts out whether each entry was correct or incorrect. 
 def evaluate_guess(guess_array)
-
-  # This method spits out whether each entry was correct or incorrect says which one. 
 
   i = 0
   while i < guess_array.length
@@ -113,11 +85,8 @@ def evaluate_guess(guess_array)
   end
 end
   
-
-  
+# Creates an array of correct entries so far  
 def correct_so_far(guess_array)
-
-  # Creates the array created so far
   
   correct_so_far_array = ["","","","",""]
 
@@ -143,7 +112,7 @@ def correct_so_far(guess_array)
     puts  "Your correct entries so far are #{correct_so_far_array}"
 end
 
-
+#Checks if the game is over (due to turns or correct entry)
 def game_over_check(guess_array)
   turn = 0 
   $game_over_status = 1
@@ -156,22 +125,12 @@ def game_over_check(guess_array)
   end
 end
 
-
-
-# How to prompt user for input 
+#Prompts user for input and rules of the game
 puts "Hello User! Welcome to Mastermind, a game where you have to guess 5 random colors in a row. The options are Red, Orange, Yellow, Green, Blue, and Purple.
 With these guesses, we'll accept the full word or the first letter of the color, (be sure to separate each color with a comma). 
 What's is your first guess?"
 
-# sequence_1 = Mastermind.new(sequence)
-
-# Create the random code, ask user for the guess, morph guess to string, create array format 
-computer_sequence = Sequence.new("computer_sequence", computer_code)
-
-
-#guess_sequence = Sequence.new("guess_sequence", actual_guess)
-
-
+# Method to go through the methods above
 def each_turn()
   turn = 1
   $game_over_status = 1
@@ -195,27 +154,10 @@ def each_turn()
   end
 
   if turn == 10 
-    game_over_check(guess)
+    game_over_check($actual_guess)
   end
 end
 
 
 each_turn()
-
-# # Creates array based off entry (so any format is acceptable)
-# make_guess_array(actual_guess)
-
-# # Confirms what entries in array are create or not correct 
-# evaluate_guess(actual_guess)
-
-# # Confirms guesses so far
-# correct_so_far(actual_guess)
-
-# Turn 2
-
-
-
-# puts actual_guess
-# guess_array = actual_guess.split(",")  
-# print guess_array[1]
   
